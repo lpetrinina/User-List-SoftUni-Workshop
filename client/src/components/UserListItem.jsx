@@ -1,4 +1,4 @@
-import { fromIsoData } from "../utils/dateTimeUtils.js";
+import { fromIsoDataShort } from "../utils/dateTimeUtils.js";
 
 export default function UserListItem({ user, onInfo }) {
   return (
@@ -14,7 +14,7 @@ export default function UserListItem({ user, onInfo }) {
       <td>{user.lastName}</td>
       <td>{user.email}</td>
       <td>{user.phoneNumber}</td>
-      <td>{fromIsoData(user.createdAt)}</td>
+      <td>{fromIsoDataShort(user.createdAt)}</td>
 
       <td className="actions">
         <button className="btn edit-btn" title="Edit">
