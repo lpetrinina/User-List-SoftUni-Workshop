@@ -22,6 +22,23 @@ export default function UserList() {
   const closeCreateUserClickHandler = () => {
     setShowCreate(false);
   };
+  const saveCreateUserClickHandler = async (event) => {
+    //Stop defailt refresh dehaviuor
+    event.preventDefault();
+
+    //Get form data
+    const formData = new FormData(event.target.parentElement.parentElement);
+    const formValues = Object.fromEntries(formData);
+
+    //create new user on server
+    const newUser = await userService.create(formValues);
+
+    //update local state
+    setUsers((state) => [...state, newUser]);
+
+    //close modal
+    setShowCreate(false);
+  };
 
   return (
     <section className="card users-container">
