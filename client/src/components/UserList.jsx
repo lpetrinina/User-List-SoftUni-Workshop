@@ -5,29 +5,37 @@ import userService from "../services/userService";
 import Pagination from "./Pagination";
 import Search from "./Search";
 import UserListItem from "./UserListItem";
+import UserCreate from "./UserCreate";
 
 export default function UserList() {
   const [users, setUsers] = useState([]);
+  const [showCreate, setShowCreate] = useState(false);
 
   useEffect(() => {
     userService.getAll().then((result) => setUsers(result));
   }, []);
 
+  const addUserClickHandler = () => {
+    setShowCreate(true);
+  };
+
   return (
     <section className="card users-container">
       <Search />
 
+      {showCreate && <UserCreate />}
+
       {/* <!-- Table component --> */}
       <div className="table-wrapper">
         {/* <!-- Overlap components  --> */}
+        <div>
+          {/* <div className="loading-shade"> */}
+          {/* <!-- Loading spinner  --> */}
+          {/* <div className="spinner"></div> */}
 
-        {/* <div className="loading-shade"> */}
-        {/* <!-- Loading spinner  --> */}
-        {/* <div className="spinner"></div> */}
+          {/* <!-- No users added yet  --> */}
 
-        {/* <!-- No users added yet  --> */}
-
-        {/* <div className="table-overlap">
+          {/* <div className="table-overlap">
               <svg
                 aria-hidden="true"
                 focusable="false"
@@ -46,11 +54,11 @@ export default function UserList() {
               <h2>There is no users yet.</h2>
             </div> */}
 
-        {/* <!-- No content overlap component  --> */}
+          {/* <!-- No content overlap component  --> */}
 
-        {/* <!-- On error overlap component  --> */}
+          {/* <!-- On error overlap component  --> */}
 
-        {/* <div className="table-overlap">
+          {/* <div className="table-overlap">
               <svg
                 aria-hidden="true"
                 focusable="false"
@@ -68,7 +76,8 @@ export default function UserList() {
               </svg>
               <h2>Failed to fetch</h2>
             </div> */}
-        {/* </div> */}
+          {/* </div> */}
+        </div>
 
         <table className="table">
           <thead>
@@ -177,7 +186,9 @@ export default function UserList() {
       </div>
 
       {/* <!-- New user button  --> */}
-      <button className="btn-add btn">Add new user</button>
+      <button className="btn-add btn" onClick={addUserClickHandler}>
+        Add new user
+      </button>
 
       <Pagination />
     </section>
