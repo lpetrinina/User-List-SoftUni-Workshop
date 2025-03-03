@@ -50,6 +50,7 @@ export default function UserList() {
     <section className="card users-container">
       <Search />
 
+      {/* <!-- Create user component  --> */}
       {showCreate && (
         <UserCreate
           onClose={closeCreateUserClickHandler}
@@ -59,6 +60,7 @@ export default function UserList() {
         </UserCreate>
       )}
 
+      {/* <!-- Details user component  --> */}
       {userIdInfo && <UserInfo userId={userIdInfo} />}
 
       {/* <!-- Table component --> */}
