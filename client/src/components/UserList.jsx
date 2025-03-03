@@ -7,10 +7,12 @@ import Search from "./Search";
 import UserListItem from "./UserListItem";
 import UserCreate from "./UserCreate";
 import NoUsersOvelap from "./NoUserOverlap";
+import UserInfo from "./UserInfo";
 
 export default function UserList() {
   const [users, setUsers] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [userIdInfo, setUserIdInfo] = useState(null);
 
   useEffect(() => {
     userService.getAll().then((result) => setUsers(result));
@@ -40,6 +42,10 @@ export default function UserList() {
     setShowCreate(false);
   };
 
+  const userInfoClickHandler = (userId) => {
+    setUserIdInfo(userId);
+  };
+
   return (
     <section className="card users-container">
       <Search />
@@ -53,7 +59,10 @@ export default function UserList() {
         </UserCreate>
       )}
 
+      {userIdInfo && <UserInfo userId={userIdInfo} />}
+
       {/* <!-- Table component --> */}
+
       <div className="table-wrapper">
         {/* <!-- Overlap components  --> */}
         <div>
@@ -186,7 +195,13 @@ export default function UserList() {
 
           <tbody>
             {users ? (
-              users.map((user) => <UserListItem key={user._id} user={user} />)
+              users.map((user) => (
+                <UserListItem
+                  onInfo={userInfoClickHandler}
+                  key={user._id}
+                  user={user}
+                />
+              ))
             ) : (
               <NoUsersOvelap />
             )}

@@ -1,6 +1,6 @@
 import { fromIsoData } from "../utils/dateTimeUtils.js";
 
-export default function UserListItem({ user }) {
+export default function UserListItem({ user, onInfo }) {
   return (
     <tr>
       <td>
@@ -53,7 +53,11 @@ export default function UserListItem({ user }) {
           </svg>
         </button>
 
-        <button className="btn info-btn" title="Info">
+        <button
+          className="btn info-btn"
+          title="Info"
+          onClick={() => onInfo(user._id)}
+        >
           <svg
             aria-hidden="true"
             focusable="false"
