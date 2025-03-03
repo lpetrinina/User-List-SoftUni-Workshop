@@ -8,11 +8,13 @@ import UserListItem from "./UserListItem";
 import UserCreate from "./UserCreate";
 import NoUsersOvelap from "./NoUserOverlap";
 import UserInfo from "./UserInfo";
+import UserDelete from "./UserDelete";
 
 export default function UserList() {
   const [users, setUsers] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
   const [userIdInfo, setUserIdInfo] = useState(null);
+  const [userIdDelete, setUserIdDelete] = useState(null);
 
   useEffect(() => {
     userService.getAll().then((result) => setUsers(result));
@@ -49,6 +51,22 @@ export default function UserList() {
     setUserIdInfo(null);
   };
 
+  const userDeleteClickHandler = (userId) => {
+    setUserIdDelete(userId);
+  };
+  const userDeleteCloseHandler = () => {
+    setUserIdDelete(null);
+  };
+  const userDeleteHandler = async () => {
+    //delete request to server
+    await userService.delete(userIdDelete);
+
+    //detete from local state
+    setUsers((state) => users.filter((user) => user._id !== userIdDelete));
+    //close modal
+    setUserIdDelete(null);
+  };
+
   return (
     <section className="card users-container">
       <Search />
@@ -68,8 +86,15 @@ export default function UserList() {
         <UserInfo userId={userIdInfo} onClose={userInfoCloseHandler} />
       )}
 
-      {/* <!-- Table component --> */}
+      {/* <!-- Delete user component  --> */}
+      {userIdDelete && (
+        <UserDelete
+          onClose={userDeleteCloseHandler}
+          onDelete={userDeleteHandler}
+        />
+      )}
 
+      {/* <!-- Table component --> */}
       <div className="table-wrapper">
         {/* <!-- Overlap components  --> */}
         <div>
@@ -205,6 +230,7 @@ export default function UserList() {
               users.map((user) => (
                 <UserListItem
                   onInfo={userInfoClickHandler}
+                  onDeleteClick={userDeleteClickHandler}
                   key={user._id}
                   user={user}
                 />

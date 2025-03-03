@@ -1,6 +1,6 @@
 import { fromIsoDataShort } from "../utils/dateTimeUtils.js";
 
-export default function UserListItem({ user, onInfo }) {
+export default function UserListItem({ user, onInfo, onDeleteClick }) {
   return (
     <tr>
       <td>
@@ -35,7 +35,11 @@ export default function UserListItem({ user, onInfo }) {
           </svg>
         </button>
 
-        <button className="btn delete-btn" title="Delete">
+        <button
+          className="btn delete-btn"
+          title="Delete"
+          onClick={() => onDeleteClick(user._id)}
+        >
           <svg
             aria-hidden="true"
             focusable="false"
