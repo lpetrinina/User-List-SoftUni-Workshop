@@ -15,6 +15,7 @@ export default function UserList() {
   const [showCreate, setShowCreate] = useState(false);
   const [userIdInfo, setUserIdInfo] = useState(null);
   const [userIdDelete, setUserIdDelete] = useState(null);
+  const [userIdEdit, setUserIdEdit] = useState(null);
 
   useEffect(() => {
     userService.getAll().then((result) => setUsers(result));
@@ -25,6 +26,7 @@ export default function UserList() {
   };
   const closeCreateUserClickHandler = () => {
     setShowCreate(false);
+    setUserIdEdit(null);
   };
   const saveCreateUserClickHandler = async (event) => {
     //Stop defailt refresh dehaviuor
@@ -67,11 +69,30 @@ export default function UserList() {
     setUserIdDelete(null);
   };
 
+  const userEditClickHandler = (userId) => {
+    setUserIdEdit(userId);
+  };
+  const saveEditUserClickHandler = async (event) => {
+    event.preventDefault();
+
+    //Get form data
+    const formData = new FormData(event.target.parentElement.parentElement);
+    const formValues = Object.fromEntries(formData);
+
+    //Update user on server
+    const updatedUser = await userService.update(userIdEdit, formValues);
+
+    setUsers((state) =>
+      state.map((user) => (user._id === userIdEdit ? updatedUser : user))
+    );
+
+    setUserIdEdit(null);
+  };
+
   return (
     <section className="card users-container">
       <Search />
 
-      {/* <!-- Create user component  --> */}
       {showCreate && (
         <UserCreate
           onClose={closeCreateUserClickHandler}
@@ -92,6 +113,17 @@ export default function UserList() {
           onClose={userDeleteCloseHandler}
           onDelete={userDeleteHandler}
         />
+      )}
+
+      {/* <!-- Edit user component  --> */}
+      {userIdEdit && (
+        <UserCreate
+          userId={userIdEdit}
+          onClose={closeCreateUserClickHandler}
+          onEdit={saveEditUserClickHandler}
+        >
+          Edit User
+        </UserCreate>
       )}
 
       {/* <!-- Table component --> */}
@@ -231,6 +263,7 @@ export default function UserList() {
                 <UserListItem
                   onInfo={userInfoClickHandler}
                   onDeleteClick={userDeleteClickHandler}
+                  onEditClick={userEditClickHandler}
                   key={user._id}
                   user={user}
                 />

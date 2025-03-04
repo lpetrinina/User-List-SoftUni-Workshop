@@ -1,6 +1,11 @@
 import { fromIsoDataShort } from "../utils/dateTimeUtils.js";
 
-export default function UserListItem({ user, onInfo, onDeleteClick }) {
+export default function UserListItem({
+  user,
+  onInfo,
+  onDeleteClick,
+  onEditClick,
+}) {
   return (
     <tr>
       <td>
@@ -17,7 +22,11 @@ export default function UserListItem({ user, onInfo, onDeleteClick }) {
       <td>{fromIsoDataShort(user.createdAt)}</td>
 
       <td className="actions">
-        <button className="btn edit-btn" title="Edit">
+        <button
+          className="btn edit-btn"
+          title="Edit"
+          onClick={() => onEditClick(user._id)}
+        >
           <svg
             aria-hidden="true"
             focusable="false"
